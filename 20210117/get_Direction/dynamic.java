@@ -1,108 +1,84 @@
 package get_Direction;
 
-/*°°Àº packageÀÎ greedy.java¿¡¼­ node class°¡ Á¤ÀÇµÇ¾î ÀÖÀ¸¹Ç·Î dynamic.java¿¡¼­ node class Á¤ÀÇÇÒ ÇÊ¿ä ¾øÀ½*/
-/*ÀÌµ¿°æ·Î?´Â Àß ¸ğ¸£°ÚÀ½*/
+/*ê°™ì€ packageì¸ greedy.javaì—ì„œ node classê°€ ì •ì˜ë˜ì–´ ìˆìœ¼ë¯€ë¡œ dynamic.javaì—ì„œ node class ì •ì˜í•  í•„ìš” ì—†ìŒ*/
 
 public class dynamic {
 
-	static node[][] arr = new node[5][5];
-	static int[][] direct = new int[5][5];
-	static int[][] arrow = new int[5][5];
-	
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
-		create_arr();
-		
-		//ÃÊ±âÈ­
-		for(int i=0;i<5;i++)
-			for(int j=0;j<5;j++)
-				direct[i][j] = -1;  
-		
-		for(int i=0;i<5;i++) {
-			direct[0][i] = 1;
-			direct[i][0] = 1;
-			
-			arrow[0][i] = 1;
-			arrow[i][0] = 1;
-		}
-		for(int i=1;i<5;i++)
-			for(int j=1;j<5;j++)
-				arrow[i][j] = 0;  
-		
-		//DP
-		direct[0][0]=0;
-		for(int i=1;i<5;i++) {
-			direct[0][i] = direct[0][i-1]+arr[0][i-1].right;
-			direct[i][0] = direct[i-1][0]+arr[i-1][0].left;
-		}
-		for(int i=1;i<5;i++) {
-			for(int j=1;j<5;j++) {
-				if(direct[i][j] == -1) { //¾ÆÁ÷ ÃÊ±âÈ­ »óÅÂ
-					if(direct[i-1][j]+arr[i-1][j].left > direct[i][j-1]+arr[i][j-1].right) {
-						direct[i][j] = direct[i-1][j]+arr[i-1][j].left;
-						arrow[i-1][j] = 1;
-					}
-					else if(direct[i-1][j]+arr[i-1][j].left < direct[i][j-1]+arr[i][j-1].right) {
-						direct[i][j] = direct[i][j-1]+arr[i][j-1].right;
-						arrow[i][j-1] = 1;
-					}
-					else {
-						direct[i][j] = direct[i][j-1]+arr[i][j-1].right;
-						arrow[i][j-1] = 1;
-					}
-				}
-			}
-		}
-		
-		//Ãâ·Â
-		System.out.println("Dynamic Programming °á°ú");
-		for(int i=0;i<5;i++) {
-			for(int j=0;j<5;j++) {
-				System.out.print(direct[i][j]+" ");
-			}
-			System.out.println();
-		}
-		
-		System.out.println("\nÀÌµ¿ °æ·Î");
-		for(int i=0;i<5;i++) {
-			for(int j=0;j<5;j++) {
-				System.out.print(arrow[i][j]+" ");
-			}
-			System.out.println();
-		}
-			
-	}
-	
-	static void create_arr() {
-		arr[0][0] = new node(3, 1);
-		arr[0][1] = new node(2, 0);
-		arr[0][2] = new node(4, 2);
-		arr[0][3] = new node(0, 4);
-		arr[0][4] = new node(-1, 3);
+   static node[][] arr = new node[5][5];
+   static int[][] direct = new int[5][5];
+   
+   public static void main(String[] args) {
+      // TODO Auto-generated method stub
+      create_arr();
+      
+      //ì´ˆê¸°í™”
+      for(int i=0;i<5;i++)
+         for(int j=0;j<5;j++)
+            direct[i][j] = -1;  
+      
+      for(int i=0;i<5;i++) {
+         direct[0][i] = 1;
+         direct[i][0] = 1;
+      }
+      
+      //DP
+      direct[0][0]=0;
+      for(int i=1;i<5;i++) {
+         direct[0][i] = direct[0][i-1]+arr[0][i-1].right;
+         direct[i][0] = direct[i-1][0]+arr[i-1][0].left;
+      }
 
-		arr[1][0] = new node(3, 4);
-		arr[1][1] = new node(2, 6);
-		arr[1][2] = new node(4, 5);
-		arr[1][3] = new node(1, 2);
-		arr[1][4] = new node(-1, 1);
-		
-		arr[2][0] = new node(0, 4);
-		arr[2][1] = new node(7, 4);
-		arr[2][2] = new node(3, 5);
-		arr[2][3] = new node(4, 2);
-		arr[2][4] = new node(-1, 1);
-		
-		arr[3][0] = new node(3, 5);
-		arr[3][1] = new node(3, 6);
-		arr[3][2] = new node(0, 8);
-		arr[3][3] = new node(2, 5);
-		arr[3][4] = new node(-1, 3);
-		
-		arr[4][0] = new node(1, -1);
-		arr[4][1] = new node(3, -1);
-		arr[4][2] = new node(2, -1);
-		arr[4][3] = new node(2, -1);
-		arr[4][4] = new node(-1, -1);	
-	}
+      for(int i=1;i<5;i++) {
+         for(int j=1;j<5;j++) {
+            if(direct[i][j] == -1) { //ì•„ì§ ì´ˆê¸°í™” ìƒíƒœ
+               if(direct[i-1][j]+arr[i-1][j].left > direct[i][j-1]+arr[i][j-1].right) 
+                  direct[i][j] = direct[i-1][j]+arr[i-1][j].left;
+               else if(direct[i-1][j]+arr[i-1][j].left < direct[i][j-1]+arr[i][j-1].right) 
+                  direct[i][j] = direct[i][j-1]+arr[i][j-1].right;
+               else 
+                  direct[i][j] = direct[i][j-1]+arr[i][j-1].right;
+            }
+         }
+      }
+      
+      //ì¶œë ¥
+      System.out.println("Dynamic Programming ê²°ê³¼");
+      for(int i=0;i<5;i++) {
+         for(int j=0;j<5;j++) 
+            System.out.print(direct[i][j]+" ");
+         System.out.println();
+      }         
+   }
+   
+   static void create_arr() {
+      arr[0][0] = new node(3, 1);
+      arr[0][1] = new node(2, 0);
+      arr[0][2] = new node(4, 2);
+      arr[0][3] = new node(0, 4);
+      arr[0][4] = new node(-1, 3);
+
+      arr[1][0] = new node(3, 4);
+      arr[1][1] = new node(2, 6);
+      arr[1][2] = new node(4, 5);
+      arr[1][3] = new node(1, 2);
+      arr[1][4] = new node(-1, 1);
+      
+      arr[2][0] = new node(0, 4);
+      arr[2][1] = new node(7, 4);
+      arr[2][2] = new node(3, 5);
+      arr[2][3] = new node(4, 2);
+      arr[2][4] = new node(-1, 1);
+      
+      arr[3][0] = new node(3, 5);
+      arr[3][1] = new node(3, 6);
+      arr[3][2] = new node(0, 8);
+      arr[3][3] = new node(2, 5);
+      arr[3][4] = new node(-1, 3);
+      
+      arr[4][0] = new node(1, -1);
+      arr[4][1] = new node(3, -1);
+      arr[4][2] = new node(2, -1);
+      arr[4][3] = new node(2, -1);
+      arr[4][4] = new node(-1, -1);   
+   }
 }
